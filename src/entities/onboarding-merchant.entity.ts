@@ -1,5 +1,5 @@
 import { MerchantStatus } from 'src/enums/MerchantStatus';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class OnboardingMerchant {
@@ -76,5 +76,8 @@ export class OnboardingMerchant {
   rejection_message: string;
 
   @CreateDateColumn()
-  created_at;
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

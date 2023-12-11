@@ -27,6 +27,7 @@ export class OnboardingMerchantService {
     return await this.onboardingMerchantRepository.save({
       ...merchant,
       national_id: nationalID,
+      status: MerchantStatus.DRAFT,
       ...merchantData
     });
   }
@@ -51,6 +52,7 @@ export class OnboardingMerchantService {
     merchant.rejected_at = new Date()
     merchant.rejection_type = rejectionData.type
     merchant.rejection_message = rejectionData.message
+    merchant.status = MerchantStatus.REJECTED
 
     return await this.onboardingMerchantRepository.save(merchant)
   }
