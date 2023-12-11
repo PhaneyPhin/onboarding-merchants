@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+  sv-onboarding-merchant:
+    container_name: sv-onboarding-merchant
+    image: sv-onboarding-merchant:latest
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    env_file:
+      - .env
