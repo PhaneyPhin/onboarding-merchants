@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { RegistrationController } from './registration.controller';
 import { OnboardingMerchantService } from './onboarding-merchant.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import config from './config';
 import { MinioService } from './minio.service';
 import { ReviewingController } from './reviewing.controler';
 import { ServiceAccountService } from './service-account.service';
+import { AuthParserMiddleware } from './auth-parser/auth-parser.middleware';
 
 @Module({
   imports: [
@@ -28,4 +29,8 @@ import { ServiceAccountService } from './service-account.service';
   providers: [OnboardingMerchantService, MinioService, ServiceAccountService],
 })
 
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+      consumer.apply(AuthParserMiddleware).forRoutes('registration')
+  }
+}

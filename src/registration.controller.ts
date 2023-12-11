@@ -1,11 +1,12 @@
-import { Body, Controller, Get, Headers, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { OnboardingMerchantService } from './onboarding-merchant.service';
 import { Step1Dto } from './dto/step1.dto';
 import { Step2Dto } from './dto/step2.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MinioService } from './minio.service';
+import { AuthRequest } from './interface/AuthRequest';
 
-@Controller()
+@Controller('registration')
 export class RegistrationController {
   constructor(
     private readonly onboardingMerchantService: OnboardingMerchantService,
@@ -14,30 +15,30 @@ export class RegistrationController {
     }
 
   @Post('/step-1')
-  async saveStep1(@Headers() headers, @Body() data: Step1Dto) {
-    return await this.onboardingMerchantService.save(headers['national_id'] as string, { ...data, step: 2 })
+  async saveStep1(@Req() authRequest: AuthRequest, @Body() data: Step1Dto) {
+    return await this.onboardingMerchantService.save(authRequest.user.personalCode, { ...data, step: 2 })
   }
 
   @Post('/step-2')
-  async saveStep2(@Headers() headers, @Body() data: Step2Dto) {
-    return await this.onboardingMerchantService.save(headers['national_id'] as string, { ...data, step: 3})
+  async saveStep2(@Req() authRequest: AuthRequest, @Body() data: Step2Dto) {
+    return await this.onboardingMerchantService.save(authRequest.user.personalCode, { ...data, step: 3})
   }
 
   @Post('/register')
-  async register(@Headers() headers) {
-    return await this.onboardingMerchantService.register(headers['national_id'] as string)
+  async register(@Req() authRequest: AuthRequest) {
+    return await this.onboardingMerchantService.register(authRequest.user.personalCode)
   }
 
   @Get('/')
-  async getDetail(@Headers() headers)
+  async getDetail(@Req() authRequest: AuthRequest)
   {
-    return await this.onboardingMerchantService.getDetail(headers['national_id'] as string)
+    return await this.onboardingMerchantService.getDetail(authRequest.user.personalCode)
   }
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File, @Headers() headers) {
-      const fileName = (headers['national_id'] as string) + '/' + file.originalname
+  async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() authRequest: AuthRequest) {
+      const fileName = (authRequest.user.personalCode) + '/' + file.originalname
       return await this.minioService.upload(fileName, file);
   }
 }
