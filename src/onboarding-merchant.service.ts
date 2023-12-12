@@ -41,7 +41,7 @@ export class OnboardingMerchantService {
   }
 
   async find(nationalID: string) {
-    return await this.onboardingMerchantRepository.findOneBy({
+    return await this.onboardingMerchantRepository.findOneByOrFail({
       national_id: nationalID
     })
   }

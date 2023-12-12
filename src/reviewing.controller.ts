@@ -11,7 +11,7 @@ export class ReviewingController {
     }
 
   @Post('/reject/:nationalId')
-  async reject(@Param(':nationalId') nationalId: string, @Body() data: RejectDto) {
+  async reject(@Param('nationalId') nationalId: string, @Body() data: RejectDto) {
     return await this.onboardingMerchantService.reject(nationalId, data)
   }
 
@@ -21,12 +21,13 @@ export class ReviewingController {
   }
 
   @Get('/:nationalId')
-  async getByNationalId(@Param(':nationalId') nationalId: string) {
+  async getByNationalId(@Param('nationalId') nationalId: string) {
+    console.log(nationalId)
     return await this.onboardingMerchantService.getDetail(nationalId)
   }
 
   @Post('/approve/:nationalId')
-  async approveMerchant(@Param(':nationalId') nationalId: string)
+  async approveMerchant(@Param('nationalId') nationalId: string)
   {
      const merchant = await this.onboardingMerchantService.find(nationalId)
      await this.onboardingMerchantService.approve(merchant)

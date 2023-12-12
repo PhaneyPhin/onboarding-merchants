@@ -7,7 +7,7 @@ import { OnboardingMerchant } from './entities/onboarding-merchant.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from './config';
 import { MinioService } from './minio.service';
-import { ReviewingController } from './reviewing.controler';
+import { ReviewingController } from './reviewing.controller';
 import { ServiceAccountService } from './service-account.service';
 import { AuthParserMiddleware } from './auth-parser/auth-parser.middleware';
 
