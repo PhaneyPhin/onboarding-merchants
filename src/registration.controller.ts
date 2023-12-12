@@ -39,6 +39,8 @@ export class RegistrationController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() authRequest: AuthRequest) {
       const fileName = (authRequest.user.personalCode) + '/' + file.originalname
-      return await this.minioService.upload(fileName, file);
+      await this.minioService.upload(fileName, file);
+
+      return { fileName: fileName }
   }
 }
