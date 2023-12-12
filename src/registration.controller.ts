@@ -32,7 +32,11 @@ export class RegistrationController {
   @Get('/')
   async getDetail(@Req() authRequest: AuthRequest)
   {
-    return await this.onboardingMerchantService.getDetail(authRequest.user.personalCode)
+    const data = await this.onboardingMerchantService.getDetail(authRequest.user.personalCode)
+    return {
+      user: authRequest.user,
+      merchantData: data
+    }
   }
 
   @Post('upload')

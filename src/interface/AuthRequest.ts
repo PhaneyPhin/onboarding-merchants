@@ -1,4 +1,4 @@
-interface User {
+export interface User {
     id: string;
     personalCode: string;
     camdigikeyId: string;
