@@ -66,6 +66,12 @@ export class OnboardingMerchant {
   @Column()
   national_id: string;
 
+  @Column({ nullable: true })
+  description: string;
+
+  @Column({ nullable: true })
+  address: string;
+
   @Column({ default: MerchantStatus.DRAFT })
   status: MerchantStatus;
 
