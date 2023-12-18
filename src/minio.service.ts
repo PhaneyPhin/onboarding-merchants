@@ -28,7 +28,8 @@ export class MinioService {
 
   async getFileSize(path) {
     try {
-      await this.minIOClient.statObject(this.configService.get('documentBucket'), path);
+      const state = await this.minIOClient.statObject(this.configService.get('documentBucket'), path);
+      return state.size
     } catch (e) {
       return null
     }

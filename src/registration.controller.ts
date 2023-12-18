@@ -45,6 +45,6 @@ export class RegistrationController {
       const fileName = (authRequest.user.personalCode) + '/' + file.originalname
       await this.minioService.upload(fileName, file);
 
-      return { fileName: fileName }
+      return { fileName: file.originalname }
   }
 }

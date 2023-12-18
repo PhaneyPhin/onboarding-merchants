@@ -89,20 +89,20 @@ export class OnboardingMerchantService {
   }
 
   async getDetail(nationId: string) {
+
     const merchant = await this.find(nationId)
     const filesToProcess = [
-      { prop: 'certificate_of_incorporation', sizeProp: 'certificate_of_incorporation_size' },
-      { prop: 'certificate_of_tax_registration', sizeProp: 'certificate_of_tax_registration_size' },
-      { prop: 'supporting_doc', sizeProp: 'supporting_doc_size' },
-      { prop: 'bank_acc_ownership_doc', sizeProp: 'bank_acc_ownership_doc_size' },
+      { prop: 'certificate_of_incorporation' },
+      { prop: 'certificate_of_tax_registration' },
+      { prop: 'supporting_doc' },
+      { prop: 'bank_acc_ownership_doc' },
     ];
     
     const promises = filesToProcess.map(async (fileInfo) => {
       const prop = fileInfo.prop;
-      const sizeProp = fileInfo.sizeProp;
     
-      merchant[prop] = await this.minioService.getTempUrl(merchant[prop]);
-      merchant[sizeProp] = await this.minioService.getFileSize(merchant[prop]);
+      merchant[prop + '_url'] = await this.minioService.getTempUrl(merchant.national_id + '/' + merchant[prop]);
+      merchant[prop + '_size'] = await this.minioService.getFileSize(merchant.national_id + '/' + merchant[prop]);
     });
     
     await Promise.all(promises);
