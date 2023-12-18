@@ -20,7 +20,7 @@ export class MinioService {
 
   async getTempUrl(path: string) {
     try {
-      return await this.minIOClient.presignedGetObject(this.configService.get('documentBucket'), path, 60)
+      return await this.minIOClient.presignedGetObject(this.configService.get('documentBucket'), path, 15 * 60)
     } catch (e) {
       return null;
     }
