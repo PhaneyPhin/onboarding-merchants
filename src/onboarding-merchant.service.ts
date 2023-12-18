@@ -71,7 +71,7 @@ export class OnboardingMerchantService {
         query.where('(merchant.company_name LIKE :keyword OR merchant.tin LIKE :keyword OR merchant.moc_id LIKE :keyword OR merchant.phone_number LIKE :keyword OR merchant.email LIKE :keyword OR merchant.merchant_name LIKE :keyword)', { keyword: `%${paginationQuery.keyword}%` })
       }
       const [data, total] = await query
-        .skip((page - 1)* pageSize)
+        .skip((page - 1) * pageSize)
         .take(pageSize)
         .getManyAndCount();
 
@@ -90,10 +90,22 @@ export class OnboardingMerchantService {
 
   async getDetail(nationId: string) {
     const merchant = await this.find(nationId)
-    merchant.certificate_of_incorporation = await this.minioService.getTempUrl(merchant.certificate_of_incorporation)
-    merchant.certificate_of_tax_registration = await this.minioService.getTempUrl(merchant.certificate_of_incorporation)
-    merchant.supporting_doc = await this.minioService.getTempUrl(merchant.supporting_doc)
-    merchant.bank_acc_ownership_doc = await this.minioService.getTempUrl(merchant.bank_acc_ownership_doc)
+    const filesToProcess = [
+      { prop: 'certificate_of_incorporation', sizeProp: 'certificate_of_incorporation_size' },
+      { prop: 'certificate_of_tax_registration', sizeProp: 'certificate_of_tax_registration_size' },
+      { prop: 'supporting_doc', sizeProp: 'supporting_doc_size' },
+      { prop: 'bank_acc_ownership_doc', sizeProp: 'bank_acc_ownership_doc_size' },
+    ];
+    
+    const promises = filesToProcess.map(async (fileInfo) => {
+      const prop = fileInfo.prop;
+      const sizeProp = fileInfo.sizeProp;
+    
+      merchant[prop] = await this.minioService.getTempUrl(merchant[prop]);
+      merchant[sizeProp] = await this.minioService.getFileSize(merchant[prop]);
+    });
+    
+    await Promise.all(promises);
     return merchant
   }
 

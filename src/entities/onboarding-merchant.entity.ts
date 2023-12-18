@@ -1,5 +1,5 @@
 import { MerchantStatus } from 'src/enums/MerchantStatus';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, AfterLoad } from 'typeorm';
 
 @Entity()
 export class OnboardingMerchant {
