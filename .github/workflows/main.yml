@@ -1,0 +1,27 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - dev
+      - 'releases/*'
+
+jobs:
+  test-typescript:
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      # - name: Build the Docker image
+      #   run: docker build . --file Dockerfile --tag caminv-sv-invoiceprocessor:$(date +%s)
+      
+      - name: Invoke deployment hook  'https://caminv-dev-merc.mef.gov.kh/hooks/${{ github.event.repository.name }}'
+        uses: distributhor/workflow-webhook@v1
+        env:
+          webhook_url: 'https://caminv-dev-merc.mef.gov.kh/hooks/${{ github.event.repository.name }}'
+          webhook_secret: ${{  secrets.DEV_DEPLOY_SECRETE_KEY }}

@@ -24,12 +24,14 @@ export class OnboardingMerchantService {
       national_id: nationalID
     })
 
-    return await this.onboardingMerchantRepository.save({
+    await this.onboardingMerchantRepository.save({
       ...merchant,
       national_id: nationalID,
       status: MerchantStatus.DRAFT,
       ...merchantData
     });
+
+    return await this.getDetail(nationalID)
   }
 
   async register(nationalID: string)
@@ -111,6 +113,9 @@ export class OnboardingMerchantService {
 
   async approve(merchant: OnboardingMerchant)
   {
+    await Promise.all([
+
+    ])
      await this.serviceAccountService.createMerchant(merchant)
      await this.minioService.remove(merchant.certificate_of_incorporation)
      await this.minioService.remove(merchant.certificate_of_tax_registration)
