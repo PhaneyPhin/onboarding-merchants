@@ -35,7 +35,9 @@ export class RegistrationController {
     const data = await this.onboardingMerchantService.getDetail(authRequest.user.personalCode)
     return {
       user: authRequest.user,
-      merchantData: data
+      merchantData: data || {
+        step: 1
+      }
     }
   }
 

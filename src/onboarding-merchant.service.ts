@@ -43,7 +43,7 @@ export class OnboardingMerchantService {
   }
 
   async find(nationalID: string) {
-    return await this.onboardingMerchantRepository.findOneByOrFail({
+    return await this.onboardingMerchantRepository.findOneBy({
       national_id: nationalID
     })
   }
@@ -91,8 +91,11 @@ export class OnboardingMerchantService {
   }
 
   async getDetail(nationId: string) {
-
     const merchant = await this.find(nationId)
+    if (! merchant) {
+      return null
+    }
+
     const filesToProcess = [
       { prop: 'certificate_of_incorporation' },
       { prop: 'certificate_of_tax_registration' },
