@@ -20,6 +20,8 @@ export default () => {
             database: process.env.DB_DATABASE,
             entities: [OnboardingMerchant],
             synchronize: true,
-          }
+          },
+        ekybUrl: process.env.EKYB_URL,
+        ekybRoadClient: process.env.EKYB_CAMDX_CLIENT
       });
 }

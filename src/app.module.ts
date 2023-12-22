@@ -10,6 +10,7 @@ import { MinioService } from './minio.service';
 import { ReviewingController } from './reviewing.controller';
 import { ServiceAccountService } from './service-account.service';
 import { AuthParserMiddleware } from './auth-parser/auth-parser.middleware';
+import { EkybService } from './ekyb.service';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { AuthParserMiddleware } from './auth-parser/auth-parser.middleware';
     TypeOrmModule.forFeature([OnboardingMerchant])
   ],
   controllers: [RegistrationController, ReviewingController],
-  providers: [OnboardingMerchantService, MinioService, ServiceAccountService],
+  providers: [OnboardingMerchantService, MinioService, ServiceAccountService, EkybService],
 })
 
 export class AppModule implements NestModule {
