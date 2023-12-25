@@ -66,11 +66,11 @@ export class OnboardingMerchantService {
       const pageSize = paginationQuery.size || 20
 
       if (paginationQuery.status) {
-        query.where('status = :status', { status: paginationQuery.status })
+        query.andWhere('status = :status', { status: paginationQuery.status })
       }
 
       if (paginationQuery.keyword) {
-        query.where('(merchant.company_name LIKE :keyword OR merchant.tin LIKE :keyword OR merchant.moc_id LIKE :keyword OR merchant.phone_number LIKE :keyword OR merchant.email LIKE :keyword OR merchant.merchant_name LIKE :keyword)', { keyword: `%${paginationQuery.keyword}%` })
+        query.andWhere('(merchant.company_name LIKE :keyword OR merchant.tin LIKE :keyword OR merchant.moc_id LIKE :keyword OR merchant.phone_number LIKE :keyword OR merchant.email LIKE :keyword OR merchant.merchant_name LIKE :keyword)', { keyword: `%${paginationQuery.keyword}%` })
       }
 
       const [data, total] = await query
