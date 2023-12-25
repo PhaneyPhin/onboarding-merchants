@@ -22,6 +22,7 @@ export default () => {
             synchronize: true,
           },
         ekybUrl: process.env.EKYB_URL,
-        ekybRoadClient: process.env.EKYB_CAMDX_CLIENT
+        ekybRoadClient: process.env.EKYB_CAMDX_CLIENT,
+        userAPIUrl: process.env.USER_URL
       });
 }

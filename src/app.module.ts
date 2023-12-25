@@ -11,6 +11,7 @@ import { ReviewingController } from './reviewing.controller';
 import { ServiceAccountService } from './service-account.service';
 import { AuthParserMiddleware } from './auth-parser/auth-parser.middleware';
 import { EkybService } from './ekyb.service';
+import { UserService } from './user.service';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { EkybService } from './ekyb.service';
     TypeOrmModule.forFeature([OnboardingMerchant])
   ],
   controllers: [RegistrationController, ReviewingController],
-  providers: [OnboardingMerchantService, MinioService, ServiceAccountService, EkybService],
+  providers: [OnboardingMerchantService, MinioService, ServiceAccountService, EkybService, UserService],
 })
 
 export class AppModule implements NestModule {

@@ -72,6 +72,7 @@ export class OnboardingMerchantService {
       if (paginationQuery.keyword) {
         query.where('(merchant.company_name LIKE :keyword OR merchant.tin LIKE :keyword OR merchant.moc_id LIKE :keyword OR merchant.phone_number LIKE :keyword OR merchant.email LIKE :keyword OR merchant.merchant_name LIKE :keyword)', { keyword: `%${paginationQuery.keyword}%` })
       }
+
       const [data, total] = await query
         .skip((page - 1) * pageSize)
         .take(pageSize)
@@ -82,8 +83,8 @@ export class OnboardingMerchantService {
       return {
         data,
         pagination: {
-          page: page,
-          size: pageSize,
+          page: Number(page),
+          size: Number(pageSize),
           total_counts: total,
           total_pages: totalPages
         }

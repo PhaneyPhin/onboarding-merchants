@@ -2,11 +2,13 @@ import { Body, Controller, Get, Headers, Param, Post, Query, UploadedFile, UseIn
 import { OnboardingMerchantService } from './onboarding-merchant.service';
 import { RejectDto } from './dto/reject.dto';
 import { MerchantListQuery } from './interface/MerchantListQuery';
+import { UserService } from './user.service';
 
 @Controller('onboard-request')
 export class ReviewingController {
   constructor(
     private readonly onboardingMerchantService: OnboardingMerchantService,
+    private readonly userService: UserService
     ) {
     }
 
@@ -22,8 +24,10 @@ export class ReviewingController {
 
   @Get('/:nationalId')
   async getByNationalId(@Param('nationalId') nationalId: string) {
-    console.log(nationalId)
-    return await this.onboardingMerchantService.getDetail(nationalId)
+    return {
+      user: await this.userService.find(nationalId),
+      merchantData: await this.onboardingMerchantService.getDetail(nationalId)
+    }
   }
 
   @Post('/approve/:nationalId')
