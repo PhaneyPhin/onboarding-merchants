@@ -17,11 +17,12 @@ export class UserService
 
     public find = async (nationId: string) => {
         try {
-            const result = await this.http.get('/id/' + nationId)
+            const result = await this.http.get('user/id/' + nationId)
             
             return result.data.data
           } catch (e) {
-            throw new Error()
+            console.log(e)
+            return null
         }
     }
 }
