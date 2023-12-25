@@ -70,7 +70,14 @@ export class OnboardingMerchantService {
       }
 
       if (paginationQuery.keyword) {
-        query.andWhere('(merchant.company_name LIKE :keyword OR merchant.tin LIKE :keyword OR merchant.moc_id LIKE :keyword OR merchant.phone_number LIKE :keyword OR merchant.email LIKE :keyword OR merchant.merchant_name LIKE :keyword)', { keyword: `%${paginationQuery.keyword}%` })
+        query.andWhere(`(lower(merchant.national_id) like lower(:keyword)
+          OR lower(merchant.company_name) LIKE lower(:keyword)
+          OR lower(merchant.tin) LIKE lower(:keyword)
+          OR lower(merchant.moc_id) LIKE lower(:keyword)
+          OR lower(merchant.phone_number) LIKE lower(:keyword)
+          OR lower(merchant.email) LIKE lower(:keyword)
+          OR lower(merchant.merchant_name) LIKE lower(:keyword)
+        )`, { keyword: `%${paginationQuery.keyword}%` })
       }
 
       const [data, total] = await query
