@@ -9,6 +9,7 @@ export class MinioService {
   constructor(
     private configService: ConfigService
   ) {
+    console.log(this.configService.get('minio'))
     this.minIOClient = new Minio.Client(this.configService.get('minio'));
   }
 
@@ -22,6 +23,7 @@ export class MinioService {
     try {
       return await this.minIOClient.presignedGetObject(this.configService.get('documentBucket'), path, 15 * 60)
     } catch (e) {
+      console.log(e)
       return null;
     }
   }

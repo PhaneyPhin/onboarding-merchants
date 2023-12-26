@@ -16,19 +16,21 @@ export class EkybService
     constructor(
         private configService: ConfigService
     ) {
+        console.log(this.configService.get('ekybUrl'), this.configService.get('ekybRoadClient'))
         this.http = axios.create({
             baseURL: this.configService.get('ekybUrl'),
             headers: {
-                'x-road-client':this.configService.get('ekybRoadClient'),
+                'x-road-client': this.configService.get('ekybRoadClient'),
                 'Content-Type': 'application/json'
             }
         })
     }
 
     public validate = async (data: EkybParm) => {
+        console.log(data)
         try {
             const result = await this.http.post('/api/2.0/kyb/company/info', data)
-            
+            console.log(result)
             if (result?.data?.data?.incorrect_fields?.length === 0) {
                 return true;
             }

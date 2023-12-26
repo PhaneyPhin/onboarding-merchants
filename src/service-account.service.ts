@@ -9,6 +9,7 @@ interface BankInfo {
     description: string;
 }
 
+
 @Injectable()
 export class ServiceAccountService
 {
@@ -54,6 +55,7 @@ export class ServiceAccountService
             
             return result.data.data
           } catch (e) {
+            console.log(e)
             throw new Error()
         }
     }
