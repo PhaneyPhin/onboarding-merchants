@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import axios, { Axios } from "axios";
 import { OnboardingMerchant } from "./entities/onboarding-merchant.entity";
@@ -58,5 +58,15 @@ export class ServiceAccountService
             console.log(e)
             throw new Error()
         }
+    }
+
+    public async getServiceAccountByMocId(mocID: string) {
+      try {
+        const result = await this.http.get('merchant/moc/' + mocID)
+        return result.data?.data
+      } catch (e) {
+        console.log(e)
+        return null;
+      }
     }
 }

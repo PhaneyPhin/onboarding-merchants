@@ -27,6 +27,8 @@ import { UserService } from './user.service';
     }),
     TypeOrmModule.forFeature([OnboardingMerchant])
   ],
+  
+
   controllers: [RegistrationController, ReviewingController],
   providers: [OnboardingMerchantService, MinioService, ServiceAccountService, EkybService, UserService],
 })

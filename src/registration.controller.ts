@@ -6,11 +6,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { MinioService } from './minio.service';
 import { AuthRequest } from './interface/AuthRequest';
 import { EkybService } from './ekyb.service';
+import { ServiceAccountService } from './service-account.service';
 
 @Controller('registration')
 export class RegistrationController {
   constructor(
     private readonly onboardingMerchantService: OnboardingMerchantService,
+    private readonly serviceAccountService: ServiceAccountService,
     private readonly minioService: MinioService,
     private readonly ekybService: EkybService
     ) {
@@ -22,7 +24,7 @@ export class RegistrationController {
       single_id: data.moc_id,
       company_name_en: data.company_name
     })
-    
+        
     if (! isValid) {
       throw new BadRequestException([
         {
@@ -35,7 +37,17 @@ export class RegistrationController {
         }
       ])
     }
+
+    const serviceAccount = await this.serviceAccountService.getServiceAccountByMocId(data.moc_id);
     
+    if (serviceAccount) {
+      throw new BadRequestException([
+        {
+          path: 'moc_id',
+          message: 'Moc ID already been registered'
+        }
+      ])
+    }
     return await this.onboardingMerchantService.save(authRequest.user.personalCode, { ...data, step: 2 })
   }
 
@@ -62,7 +74,7 @@ export class RegistrationController {
   }
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', { limits: { fieldSize: 10 * 1024 * 1024 }}))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() authRequest: AuthRequest) {
       const fileName = (authRequest.user.personalCode) + '/' + file.originalname
       await this.minioService.upload(fileName, file);
