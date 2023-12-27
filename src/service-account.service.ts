@@ -28,8 +28,9 @@ export class ServiceAccountService
             const result = await this.http.post('merchant', {
                 name: merchant.merchant_name,
                 address: {
-                  city_name: merchant.company_name,
-                  country_code: "KH"
+                  city_name: merchant.city,
+                  country_code: "KH",
+                  street_name: merchant.address
                 },
                 party_tax_scheme: {
                   company_id: merchant.tin,
