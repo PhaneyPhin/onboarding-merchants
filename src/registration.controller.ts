@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Headers, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Headers, Param, Post, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { OnboardingMerchantService } from './onboarding-merchant.service';
 import { Step1Dto } from './dto/step1.dto';
 import { Step2Dto } from './dto/step2.dto';

@@ -23,6 +23,8 @@ export default () => {
           },
         ekybUrl: process.env.EKYB_URL,
         ekybRoadClient: process.env.EKYB_CAMDX_CLIENT,
-        userAPIUrl: process.env.USER_URL
+        userAPIUrl: process.env.USER_URL,
+        signatureSecrete: process.env.SIGNATURE_SECRETE,
+        fileBaseUrl: process.env.FILE_BASE_URL
       });
 }

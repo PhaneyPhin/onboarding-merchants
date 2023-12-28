@@ -37,6 +37,29 @@ export class MinioService {
     }
   }
 
+  async getFile(path: string) {
+    return new Promise((resolve, reject) => {
+      let data: any = null;
+
+      this.minIOClient.getObject(this.configService.get('documentBucket'), path, function (err, objStream) {
+        if (err) {
+          reject(err)
+        }
+
+        objStream.on('data', function (chunk) {
+          data = !data ? Buffer.from(chunk) : Buffer.concat([data, chunk]);
+        })
+        objStream.on('end', function () {
+          resolve(data)
+        })
+
+        objStream.on('error', function (err) {
+          reject(err)
+        })
+      });
+    })
+  }
+
   async remove(path)
   {
     try {

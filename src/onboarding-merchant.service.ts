@@ -113,8 +113,6 @@ export class OnboardingMerchantService {
     
     const promises = filesToProcess.map(async (fileInfo) => {
       const prop = fileInfo.prop;
-    
-      merchant[prop + '_url'] = await this.minioService.getTempUrl(merchant.national_id + '/' + merchant[prop]);
       merchant[prop + '_size'] = await this.minioService.getFileSize(merchant.national_id + '/' + merchant[prop]);
     });
     
@@ -124,14 +122,7 @@ export class OnboardingMerchantService {
 
   async approve(merchant: OnboardingMerchant)
   {
-    await Promise.all([
-
-    ])
      await this.serviceAccountService.createMerchant(merchant)
-     await this.minioService.remove(merchant.certificate_of_incorporation)
-     await this.minioService.remove(merchant.certificate_of_tax_registration)
-     await this.minioService.remove(merchant.bank_acc_ownership_doc)
-     await this. minioService.remove(merchant.supporting_doc)
-     await this.onboardingMerchantRepository.delete({ id: merchant.id })
+     await this.onboardingMerchantRepository.update({ id: merchant.id }, { status: MerchantStatus.APPROVED })
   }
 }
