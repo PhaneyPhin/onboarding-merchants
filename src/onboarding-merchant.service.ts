@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OnboardingMerchant } from './entities/onboarding-merchant.entity';
 import { Repository } from 'typeorm';
@@ -43,9 +43,15 @@ export class OnboardingMerchantService {
   }
 
   async find(nationalID: string) {
-    return await this.onboardingMerchantRepository.findOneBy({
+    let onboardingMerchant = await this.onboardingMerchantRepository.findOneBy({
       national_id: nationalID
     })
+
+    if (onboardingMerchant && onboardingMerchant.status === MerchantStatus.APPROVED) {
+      throw new NotFoundException()
+    }
+    
+    return onboardingMerchant;
   }
 
   async reject(nationalID: string, rejectionData: RejectDto)

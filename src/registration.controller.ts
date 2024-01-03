@@ -48,6 +48,7 @@ export class RegistrationController {
         }
       ])
     }
+    
     return await this.onboardingMerchantService.save(authRequest.user.personalCode, { ...data, step: 2 })
   }
 

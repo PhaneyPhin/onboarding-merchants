@@ -9,7 +9,6 @@ interface BankInfo {
     description: string;
 }
 
-
 @Injectable()
 export class ServiceAccountService
 {
